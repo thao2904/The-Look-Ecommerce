@@ -14,3 +14,4 @@ JOIN bigquery-public-data.thelook_ecommerce.products AS c ON a.id = c.id
 WHERE DATE(a.created_at) BETWEEN DATE_SUB(DATE('2022-04-15'), INTERVAL 3 MONTH) AND DATE('2022-04-15')
 GROUP BY  c.category, a.created_at 
 ORDER BY a.created_at
+-- Link file output: https://drive.google.com/drive/u/0/folders/1AhgFxZsS8JKTg1OypA-cI7uOpxtK0dqt
