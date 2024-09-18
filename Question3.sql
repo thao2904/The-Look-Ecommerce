@@ -1,4 +1,3 @@
-
 WITH user_age AS (
   SELECT gender, 
          MIN(age) as youngest_age, 
@@ -20,7 +19,7 @@ oldest_age1 AS (
   WHERE a.age = b.oldest_age
     AND a.created_at BETWEEN '2019-01-01' AND '2022-04-30'
 )
--- Counting the youngest and oldest users by gender
+
 ,youngest_oldest_age AS (
   SELECT * FROM youngest_age1
   UNION ALL 
