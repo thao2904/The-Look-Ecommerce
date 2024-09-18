@@ -18,3 +18,4 @@ rank_per_month
 FROM rank_product
 WHERE rank_per_month <= 5
 ORDER BY month_year, rank_per_month
+-- Link file output: https://drive.google.com/drive/u/0/folders/1AhgFxZsS8JKTg1OypA-cI7uOpxtK0dqt
