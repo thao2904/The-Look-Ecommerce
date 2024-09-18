@@ -36,3 +36,4 @@ oldest_age1 AS (
 SELECT gender, tag, COUNT(*) AS count
 FROM youngest_oldest_age 
 GROUP BY gender, tag;
+https://drive.google.com/drive/u/0/folders/1AhgFxZsS8JKTg1OypA-cI7uOpxtK0dqt
