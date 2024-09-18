@@ -6,8 +6,6 @@ SELECT
 FROM 
     bigquery-public-data.thelook_ecommerce.orders
 WHERE created_at BETWEEN '2019-01-01' AND '2022-04-30'
-AND status NOT IN ("Cancelled,Returned")
+AND status NOT IN ('Cancelled', 'Returned')  
 GROUP BY month_year
 ORDER BY month_year;
-
---Link file excel result: https://drive.google.com/file/d/1tHTgbQgAOQdx-9ot7pn85yQmjN9EAOYC/view?usp=sharing
