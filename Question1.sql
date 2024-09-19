@@ -2,7 +2,7 @@
 SELECT 
     COUNT(order_id) AS total_order, 
     COUNT(DISTINCT user_id) AS total_user, 
-    FORMAT_TIMESTAMP('%Y-%m', created_at) AS month_year
+    FORMAT_DATE('%Y-%m', created_at) AS month_year
 FROM 
     bigquery-public-data.thelook_ecommerce.orders
 WHERE created_at BETWEEN '2019-01-01' AND '2022-04-30'
