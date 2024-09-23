@@ -1,4 +1,4 @@
-WITH aggregated_data AS (
+WITH sale_data AS (
   SELECT 
       FORMAT_DATE('%Y-%m', a.created_at) AS month,
       b.category AS product_category, 
@@ -12,7 +12,6 @@ WITH aggregated_data AS (
   ON a.id = b.id
   GROUP BY month, b.category
 )
-
 SELECT 
     month,
     product_category,
@@ -23,5 +22,5 @@ SELECT
     total_cost,
     total_profit,
     profit_to_cost_ratio
-FROM aggregated_data
+FROM sale_data
 ORDER BY month;
