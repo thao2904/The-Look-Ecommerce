@@ -24,3 +24,34 @@ SELECT
     profit_to_cost_ratio
 FROM sale_data
 ORDER BY month;
+
+
+-- TẠO COHORT:
+WITH ecommerce_index as(
+SELECT 
+    user_id, 
+    amount, 
+    FORMAT_DATE('%Y-%m', DATE(first_purchase_date)) AS cohort_date,  
+    created_at, 
+    (EXTRACT(YEAR FROM created_at) - EXTRACT(YEAR FROM first_purchase_date)) * 12 + 
+    (EXTRACT(MONTH FROM created_at) - EXTRACT(MONTH FROM first_purchase_date)) + 1 AS index
+FROM (
+    SELECT 
+        a.user_id, 
+        a.num_of_item * b.sale_price AS amount,  
+        MIN(a.created_at) OVER (PARTITION BY a.user_id) AS first_purchase_date, 
+        a.created_at
+    FROM bigquery-public-data.thelook_ecommerce.orders a
+    JOIN bigquery-public-data.thelook_ecommerce.order_items b 
+    ON a.order_id = b.order_id 
+    WHERE a.status NOT IN ('Cancelled', 'Returned')
+) AS c)
+
+SELECT cohort_date, 
+index, 
+COUNT(DISTINCT user_id) AS customer_id,
+ROUND(SUM(amount),2) AS revenue
+from ecommerce_index
+WHERE index BETWEEN 1 AND 4 
+GROUP BY cohort_date, index
+ORDER BY cohort_date, index;
