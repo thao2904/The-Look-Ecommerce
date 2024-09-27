@@ -38,20 +38,37 @@ SELECT
 FROM (
     SELECT 
         a.user_id, 
-        a.num_of_item * b.sale_price AS amount,  
+        ROUND(a.sale_price,2) AS amount,  
         MIN(a.created_at) OVER (PARTITION BY a.user_id) AS first_purchase_date, 
         a.created_at
-    FROM bigquery-public-data.thelook_ecommerce.orders a
-    JOIN bigquery-public-data.thelook_ecommerce.order_items b 
-    ON a.order_id = b.order_id 
+    FROM bigquery-public-data.thelook_ecommerce.order_items a
     WHERE a.status NOT IN ('Cancelled', 'Returned')
 ) AS c)
 
+, sale_analysis AS(
 SELECT cohort_date, 
 index, 
 COUNT(DISTINCT user_id) AS customer_id,
 ROUND(SUM(amount),2) AS revenue
 from ecommerce_index
-WHERE index BETWEEN 1 AND 4 
 GROUP BY cohort_date, index
-ORDER BY cohort_date, index;
+ORDER BY index)
+-- CUSTOMER COHORT
+,customer_cohort AS (
+select 
+cohort_date,
+sum(case when index=1 then customer_id else 0 end ) as m1,
+sum(case when index=2 then customer_id else 0 end ) as m2,
+sum(case when index=3 then customer_id else 0 end ) as m3,
+sum(case when index=4 then customer_id else 0 end ) as m4
+from sale_analysis
+group by cohort_date
+order by cohort_date)
+-- RETENTION COHORT 
+SELECT
+cohort_date,
+round(100.00* m1/m1,2) || '%' as m1,
+round(100.00* m2/m1,2) || '%' as m2,
+round(100.00* m3/m1,2) || '%' as m3,
+round(100.00* m4/m1,2) || '%' as m4
+from customer_cohort
