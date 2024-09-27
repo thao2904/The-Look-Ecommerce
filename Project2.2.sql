@@ -72,3 +72,4 @@ round(100.00* m2/m1,2) || '%' as m2,
 round(100.00* m3/m1,2) || '%' as m3,
 round(100.00* m4/m1,2) || '%' as m4
 from customer_cohort
+-- Link file excel: https://docs.google.com/spreadsheets/d/1b04K1pGm8c9GMR9fuvkc1olgiqap_P1Q_IfStLDlYfY/edit?usp=sharing
